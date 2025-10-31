@@ -7,22 +7,19 @@ export declare class BooksController {
     constructor(booksService: BooksService);
     create(createBookDto: CreateBookDto): Promise<{
         author: {
+            id: string;
+            deletedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             firstName: string;
             lastName: string;
             bio: string | null;
             birthDate: Date | null;
-            id: string;
             email: string | null;
             website: string | null;
-            deletedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
         id: string;
-        deletedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         isbn: string;
         publishedDate: Date | null;
@@ -33,20 +30,20 @@ export declare class BooksController {
         publisher: string | null;
         price: import("@prisma/client/runtime/library").Decimal | null;
         currency: string | null;
+        deletedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     findAll(query: QueryBookDto): Promise<{
         data: ({
             author: {
+                id: string;
                 firstName: string;
                 lastName: string;
-                id: string;
             };
         } & {
             id: string;
-            deletedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
             title: string;
             isbn: string;
             publishedDate: Date | null;
@@ -57,6 +54,9 @@ export declare class BooksController {
             publisher: string | null;
             price: import("@prisma/client/runtime/library").Decimal | null;
             currency: string | null;
+            deletedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             authorId: string;
         })[];
         meta: {
@@ -68,22 +68,19 @@ export declare class BooksController {
     }>;
     findOne(id: string): Promise<{
         author: {
+            id: string;
+            deletedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             firstName: string;
             lastName: string;
             bio: string | null;
             birthDate: Date | null;
-            id: string;
             email: string | null;
             website: string | null;
-            deletedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
         id: string;
-        deletedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         isbn: string;
         publishedDate: Date | null;
@@ -94,26 +91,26 @@ export declare class BooksController {
         publisher: string | null;
         price: import("@prisma/client/runtime/library").Decimal | null;
         currency: string | null;
+        deletedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     update(id: string, updateBookDto: UpdateBookDto): Promise<{
         author: {
+            id: string;
+            deletedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             firstName: string;
             lastName: string;
             bio: string | null;
             birthDate: Date | null;
-            id: string;
             email: string | null;
             website: string | null;
-            deletedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
         id: string;
-        deletedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
         title: string;
         isbn: string;
         publishedDate: Date | null;
@@ -124,6 +121,9 @@ export declare class BooksController {
         publisher: string | null;
         price: import("@prisma/client/runtime/library").Decimal | null;
         currency: string | null;
+        deletedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         authorId: string;
     }>;
     remove(id: string): Promise<void>;

@@ -1,6 +1,6 @@
 @host = http://localhost:3000/api/v1
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNDc4ZmJmMS1kMDI5LTQ4MzAtOWEzZS0zYjkxNDRhYWI2YzgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc2MTkyOTY4MiwiZXhwIjoxNzYxOTMwNTgyfQ.3ztvF-_bH2tHE7BAb7u9qvQhwYQqVr-8eTDdzkos2KU
-@authorId = 4570739d-7651-47a0-82c3-dbffa60f379f
+@authorId = 78e9da5e-98bf-47a4-9dce-46833cfdfdc98bda
 
 
 ### Create author

@@ -21,9 +21,7 @@ export class BooksService {
     });
 
     if (!authorExists) {
-      throw new BadRequestException(
-        `Author with ID ${createBookDto.authorId} does not exist`
-      );
+      throw new BadRequestException(`Author does not exist`);
     }
 
     try {

@@ -138,7 +138,7 @@ describe("BooksService", () => {
         BadRequestException
       );
       await expect(service.create(createBookDto as any)).rejects.toThrow(
-        "Author with ID author-123 does not exist"
+        "Author does not exist"
       );
       expect(mockPrismaService.book.create).not.toHaveBeenCalled();
     });

@@ -21,7 +21,7 @@ let BooksService = class BooksService {
             where: { id: createBookDto.authorId },
         });
         if (!authorExists) {
-            throw new common_1.BadRequestException(`Author with ID ${createBookDto.authorId} does not exist`);
+            throw new common_1.BadRequestException(`Author does not exist`);
         }
         try {
             const book = await this.prisma.book.create({

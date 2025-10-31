@@ -80,7 +80,7 @@ export class AuthorsService {
     });
 
     if (!author) {
-      throw new NotFoundException(`Author with ID ${id} not found`);
+      throw new NotFoundException(`Author not found`);
     }
 
     return author;
@@ -100,7 +100,7 @@ export class AuthorsService {
       return author;
     } catch (error) {
       if (error.code === "P2025") {
-        throw new NotFoundException(`Author with ID ${id} not found`);
+        throw new NotFoundException(`Author not found`);
       }
       throw error;
     }
@@ -124,7 +124,7 @@ export class AuthorsService {
       });
     } catch (error) {
       if (error.code === "P2025") {
-        throw new NotFoundException(`Author with ID ${id} not found`);
+        throw new NotFoundException(`Author not found`);
       }
       throw error;
     }

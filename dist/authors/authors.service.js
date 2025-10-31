@@ -78,7 +78,7 @@ let AuthorsService = class AuthorsService {
             },
         });
         if (!author) {
-            throw new common_1.NotFoundException(`Author with ID ${id} not found`);
+            throw new common_1.NotFoundException(`Author not found`);
         }
         return author;
     }
@@ -97,7 +97,7 @@ let AuthorsService = class AuthorsService {
         }
         catch (error) {
             if (error.code === "P2025") {
-                throw new common_1.NotFoundException(`Author with ID ${id} not found`);
+                throw new common_1.NotFoundException(`Author not found`);
             }
             throw error;
         }
@@ -116,7 +116,7 @@ let AuthorsService = class AuthorsService {
         }
         catch (error) {
             if (error.code === "P2025") {
-                throw new common_1.NotFoundException(`Author with ID ${id} not found`);
+                throw new common_1.NotFoundException(`Author not found`);
             }
             throw error;
         }

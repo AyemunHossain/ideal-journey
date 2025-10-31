@@ -6,11 +6,11 @@ export declare class AuthorsService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createAuthorDto: CreateAuthorDto): Promise<{
+        id: string;
         firstName: string;
         lastName: string;
         bio: string | null;
         birthDate: Date | null;
-        id: string;
         email: string | null;
         website: string | null;
         deletedAt: Date | null;
@@ -19,11 +19,11 @@ export declare class AuthorsService {
     }>;
     findAll(query: QueryAuthorDto): Promise<{
         data: {
+            id: string;
             firstName: string;
             lastName: string;
             bio: string | null;
             birthDate: Date | null;
-            id: string;
             email: string | null;
             website: string | null;
             deletedAt: Date | null;
@@ -45,11 +45,11 @@ export declare class AuthorsService {
             genre: string;
         }[];
     } & {
+        id: string;
         firstName: string;
         lastName: string;
         bio: string | null;
         birthDate: Date | null;
-        id: string;
         email: string | null;
         website: string | null;
         deletedAt: Date | null;
@@ -57,11 +57,11 @@ export declare class AuthorsService {
         updatedAt: Date;
     }>;
     update(id: string, updateAuthorDto: UpdateAuthorDto): Promise<{
+        id: string;
         firstName: string;
         lastName: string;
         bio: string | null;
         birthDate: Date | null;
-        id: string;
         email: string | null;
         website: string | null;
         deletedAt: Date | null;
