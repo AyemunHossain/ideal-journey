@@ -315,7 +315,7 @@ describe("AuthorsService", () => {
         NotFoundException
       );
       await expect(service.findOne("non-existent")).rejects.toThrow(
-        "Author with ID non-existent not found"
+        "Author not found"
       );
     });
 
