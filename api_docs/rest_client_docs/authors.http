@@ -1,0 +1,42 @@
+@host = http://localhost:3000/api/v1
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNDc4ZmJmMS1kMDI5LTQ4MzAtOWEzZS0zYjkxNDRhYWI2YzgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc2MTkyOTY4MiwiZXhwIjoxNzYxOTMwNTgyfQ.3ztvF-_bH2tHE7BAb7u9qvQhwYQqVr-8eTDdzkos2KU
+@authorId = 4570739d-7651-47a0-82c3-dbffa60f379f
+
+
+### Create author
+POST {{host}}/authors
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Ernest",
+  "lastName": "Hemingway",
+  "bio": "American novelist and short-story writer.",
+  "birthDate": "1899-07-21"
+}
+
+### List authors (pagination)
+GET {{host}}/authors?page=1&limit=10
+
+### Search authors
+GET {{host}}/authors?search=Ernest&page=1&limit=10
+
+### Get author by id
+GET {{host}}/authors/{{authorId}}
+
+### Update author
+PATCH {{host}}/authors/{{authorId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "bio": "Updated bio text"
+}
+
+### Delete author
+DELETE {{host}}/authors/{{authorId}}
+Authorization: Bearer {{accessToken}}
+
+# Notes:
+# - Replace {{authorId}} with a real author UUID from responses.
+# - If your API requires auth for list endpoints, add Authorization header.

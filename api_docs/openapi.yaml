@@ -1,0 +1,669 @@
+openapi: 3.0.3
+info:
+  title: Book Management API
+  version: 1.0.0
+  description: API for managing authors and books (generated from project controllers/DTOs)
+servers:
+  - url: http://localhost:3000
+    description: Local dev server (root)
+  - url: http://localhost:3000/api/v1
+    description: Local dev server with API base path used by rest_client_docs
+
+paths:
+  /authors:
+    post:
+      summary: Create a new author
+      tags: [Authors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAuthorDto"
+      responses:
+        "201":
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+    get:
+      summary: List authors (paginated)
+      tags: [Authors]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/search"
+      responses:
+        "200":
+          description: Paginated list of authors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Author"
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      totalPages:
+                        type: integer
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /authors/{id}:
+    get:
+      summary: Get an author by ID (includes books)
+      tags: [Authors]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Author found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorWithBooks"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      summary: Update an author
+      tags: [Authors]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAuthorDto"
+      responses:
+        "200":
+          description: Updated author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Author"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete an author
+      tags: [Authors]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Author deleted (no content)
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /books:
+    post:
+      summary: Create a new book
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBookDto"
+      responses:
+        "201":
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookWithAuthor"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    get:
+      summary: List books (paginated)
+      tags: [Books]
+      parameters:
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/authorId"
+      responses:
+        "200":
+          description: Paginated list of books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BookWithAuthor"
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      totalPages:
+                        type: integer
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /books/{id}:
+    get:
+      summary: Get a book by ID
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookWithAuthor"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      summary: Update a book
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBookDto"
+      responses:
+        "200":
+          description: Updated book
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookWithAuthor"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    delete:
+      summary: Delete a book
+      tags: [Books]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Book deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /auth/signup:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupDto"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /auth/signin:
+    post:
+      summary: Sign in and receive access & refresh tokens
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SigninDto"
+      responses:
+        "200":
+          description: Authentication tokens
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokens"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token using a refresh token (guarded)
+      tags: [Auth]
+      responses:
+        "200":
+          description: New tokens
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokens"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/logout:
+    post:
+      summary: Logout (invalidate refresh token)
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Logged out
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/profile:
+    get:
+      summary: Get current user's profile
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/change-password:
+    patch:
+      summary: Change current user's password
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordDto"
+      responses:
+        "200":
+          description: Password changed
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth/status:
+    get:
+      summary: Check authentication status and basic user info
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Authentication status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: string
+        pattern: "^[0-9]+$"
+      description: Page number (as string)
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: string
+        pattern: "^[0-9]+$"
+      description: Page size (as string)
+    search:
+      name: search
+      in: query
+      schema:
+        type: string
+      description: Full-text search term
+    authorId:
+      name: authorId
+      in: query
+      schema:
+        type: string
+        format: uuid
+      description: Filter by author ID
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    CreateAuthorDto:
+      type: object
+      required: [firstName, lastName]
+      properties:
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        bio:
+          type: string
+          maxLength: 1000
+          nullable: true
+        birthDate:
+          type: string
+          format: date
+          nullable: true
+
+    UpdateAuthorDto:
+      allOf:
+        - $ref: "#/components/schemas/CreateAuthorDto"
+      description: Partial update of CreateAuthorDto
+
+    QueryAuthorDto:
+      type: object
+      properties:
+        page:
+          type: string
+          default: "1"
+        limit:
+          type: string
+          default: "10"
+        search:
+          type: string
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        birthDate:
+          type: string
+          format: date
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    AuthorWithBooks:
+      allOf:
+        - $ref: "#/components/schemas/Author"
+        - type: object
+          properties:
+            books:
+              type: array
+              items:
+                $ref: "#/components/schemas/Book"
+
+    CreateBookDto:
+      type: object
+      required: [title, isbn, authorId]
+      properties:
+        title:
+          type: string
+          maxLength: 255
+        isbn:
+          type: string
+          description: ISBN-10 or ISBN-13
+        publishedDate:
+          type: string
+          format: date
+          nullable: true
+        genre:
+          type: string
+          maxLength: 100
+          nullable: true
+        authorId:
+          type: string
+          format: uuid
+
+    UpdateBookDto:
+      allOf:
+        - $ref: "#/components/schemas/CreateBookDto"
+      description: Partial update of CreateBookDto (authorId omitted in update)
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        isbn:
+          type: string
+        publishedDate:
+          type: string
+          format: date
+          nullable: true
+        genre:
+          type: string
+          nullable: true
+        authorId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BookWithAuthor:
+      allOf:
+        - $ref: "#/components/schemas/Book"
+        - type: object
+          properties:
+            author:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        message:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+
+tags:
+  - name: Authors
+    description: Operations related to authors
+  - name: Books
+    description: Operations related to books
+  - name: Auth
+    description: Authentication and user account operations
+
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+
+responses:
+  Unauthorized:
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ErrorResponse"
+
+schemas:
+  SignupDto:
+    type: object
+    required: [email, password]
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        minLength: 8
+
+  SigninDto:
+    type: object
+    required: [email, password]
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+
+  AuthTokens:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+
+  Profile:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      email:
+        type: string
+        format: email
+      role:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+
+  ChangePasswordDto:
+    type: object
+    required: [currentPassword, newPassword]
+    properties:
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+        minLength: 8
+
+  StatusResponse:
+    type: object
+    properties:
+      isAuthenticated:
+        type: boolean
+      user:
+        type: object
+        properties:
+          userId:
+            type: string
+            format: uuid
+          email:
+            type: string
+            format: email
+          role:
+            type: string

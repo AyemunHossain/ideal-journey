@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ES2021",
+    "module": "CommonJS",
+    "lib": ["ES2021", "DOM"],
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "outDir": "./dist",
+
+    /* Strict Type-Checking */
+    // "strict": true,
+    // "noImplicitAny": true,
+    // "strictNullChecks": true,
+    // "strictBindCallApply": true,
+    // "forceConsistentCasingInFileNames": true,
+
+    /* Module Resolution */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Advanced Options */
+    "incremental": true,
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* Paths (adjust if using aliases) */
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}

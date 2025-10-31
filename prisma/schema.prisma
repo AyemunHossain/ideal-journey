@@ -1,0 +1,107 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+model User {
+  id                   String    @id @default(uuid())
+  email                String    @unique @db.VarChar(255)
+  password             String // Hashed
+  firstName            String    @db.VarChar(100)
+  lastName             String    @db.VarChar(100)
+  role                 Role      @default(USER)
+  isActive             Boolean   @default(true)
+  isEmailVerified      Boolean   @default(false)
+  emailVerifiedAt      DateTime?
+  lastLoginAt          DateTime?
+  refreshToken         String?   @db.Text
+  passwordResetToken   String?   @db.Text
+  passwordResetExpires DateTime?
+  failedLoginAttempts  Int       @default(0)
+  lockedUntil          DateTime?
+
+  // Audit fields
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+model Author {
+  id        String    @id @default(uuid())
+  firstName String    @db.VarChar(100)
+  lastName  String    @db.VarChar(100)
+  bio       String?   @db.Text
+  birthDate DateTime? @db.Date
+  email     String?   @unique @db.VarChar(255)
+  website   String?   @db.VarChar(255)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  books     Book[]
+
+  @@index([firstName, lastName])
+  @@index([email])
+  @@index([deletedAt])
+  @@map("authors")
+}
+
+model Book {
+  id            String    @id @default(uuid())
+  title         String    @db.VarChar(500)
+  isbn          String    @unique @db.VarChar(20)
+  publishedDate DateTime? @db.Date
+  genre         String?   @db.VarChar(100)
+  description   String?   @db.Text
+  pageCount     Int?
+  language      String?   @db.VarChar(50)
+  publisher     String?   @db.VarChar(255)
+  price         Decimal?  @db.Decimal(10, 2)
+  currency      String?   @db.VarChar(3)
+  authorId      String
+  author        Author    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  deletedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([title])
+  @@index([isbn])
+  @@index([authorId])
+  @@index([genre])
+  @@index([deletedAt])
+  @@index([publishedDate])
+  @@map("books")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  entityType String   @db.VarChar(50)
+  entityId   String   @db.VarChar(36)
+  action     String   @db.VarChar(20)
+  userId     String?  @db.VarChar(36)
+  changes    Json?
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

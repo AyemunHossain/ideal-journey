@@ -1,0 +1,54 @@
+@host = http://localhost:3000/api/v1
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNDc4ZmJmMS1kMDI5LTQ4MzAtOWEzZS0zYjkxNDRhYWI2YzgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc2MTkyOTY4MiwiZXhwIjoxNzYxOTMwNTgyfQ.3ztvF-_bH2tHE7BAb7u9qvQhwYQqVr-8eTDdzkos2KU
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNDc4ZmJmMS1kMDI5LTQ4MzAtOWEzZS0zYjkxNDRhYWI2YzgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc2MTkyOTY4MiwiZXhwIjoxNzYyNTM0NDgyfQ.qj0l0KFYnwB8VsWDG-0DLkst2kuiHIRoFdrl9TtlMc8
+
+### Signup - create account
+POST {{host}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "P@ssw0rd!",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+### Signin - get access & refresh tokens
+POST {{host}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "P@ssw0rd!"
+}
+
+### Refresh - exchange refresh token for new tokens
+# If your refresh flow uses Authorization header with the refresh token:
+POST {{host}}/auth/refresh
+Authorization: Bearer {{refreshToken}}
+
+### Logout - revoke server-side session / refresh token
+POST {{host}}/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### Get Profile - current user info
+GET {{host}}/auth/profile
+Authorization: Bearer {{accessToken}}
+
+### Change Password
+PATCH {{host}}/auth/change-password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "currentPassword": "P@ssw0rd!",
+  "newPassword": "N3wP@ssw0rd!"
+}
+
+### Status - auth check
+GET {{host}}/auth/status
+Authorization: Bearer {{accessToken}}
+
+# Notes:
+# 1) After signin, copy accessToken into @accessToken and refreshToken into @refreshToken for subsequent requests.
+# 2) Adjust host if different. If refresh token is sent via cookie in your app, use the cookie mechanism instead of Authorization header.

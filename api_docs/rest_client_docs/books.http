@@ -1,0 +1,46 @@
+@host = http://localhost:3000/api/v1
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNDc4ZmJmMS1kMDI5LTQ4MzAtOWEzZS0zYjkxNDRhYWI2YzgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc2MTkyOTY4MiwiZXhwIjoxNzYxOTMwNTgyfQ.3ztvF-_bH2tHE7BAb7u9qvQhwYQqVr-8eTDdzkos2KU
+@authorId = 4570739d-7651-47a0-82c3-dbffa60f379f
+@bookId = c00e8aa0-7e49-46bd-8078-575044adf742
+### Create book
+POST {{host}}/books
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "The Old Man and the Sea",
+  "isbn": "978-0684801223",
+  "publishedDate": "1952-09-01",
+  "genre": "Fiction",
+  "authorId": "{{authorId}}"
+}
+
+### List books (pagination)
+GET {{host}}/books?page=1&limit=10
+
+### Search books
+GET {{host}}/books?search=Sea&page=1&limit=10
+
+### List books by author
+GET {{host}}/books?authorId={{authorId}}&page=1&limit=10
+
+### Get book by id
+GET {{host}}/books/{{bookId}}
+
+### Update book
+PATCH {{host}}/books/{{bookId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "The Old Man and the Sea (Revised Edition)",
+  "genre": "Classic Fiction"
+}
+
+### Delete book
+DELETE {{host}}/books/{{bookId}}
+Authorization: Bearer {{accessToken}}
+
+# Notes:
+# - Replace {{authorId}} and {{bookId}} with real IDs from API responses.
+# - Use the Signin request in auth.http to obtain tokens, then paste the token into @accessToken.
